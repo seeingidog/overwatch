@@ -1,26 +1,9 @@
-require 'yajl'
-require 'haml'
-require 'sinatra/base'
-require 'dm-core'
-require 'dm-validations'
-require 'dm-redis-adapter'
-require 'dm-serializer'
-require 'dm-types'
-require 'dm-timestamps'
-require 'mail'
-require 'hashie'
-require 'rest-client'
-require 'resque'
+require 'bundler'
+Bundler.require(:default)
 
 DataMapper.setup(:default, { :adapter => 'redis' })
 
 require 'active_support/core_ext'
-# require 'active_support/core_ext/numeric/time'
-# require 'active_support/core_ext/string/conversions'
-# require 'active_support/core_ext/integer/time'
-# require 'active_support/core_ext/time/calculations'
-# require 'active_support/core_ext/date_time/calculations'
-
 
 require 'overwatch/version'
 require 'overwatch/application'

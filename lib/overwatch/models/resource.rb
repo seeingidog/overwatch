@@ -11,6 +11,7 @@ module Overwatch
     has n, :snapshots
     has n, :checks, :through => :check_resources
     has n, :events, :through => :checks
+    
     before :create, :generate_api_key
 
     def snapshot_range(start_at=nil, end_at=nil)
@@ -34,6 +35,10 @@ module Overwatch
     def regenerate_api_key
       generate_api_key
       self.save
+    end
+    
+    def self.find_by_name_or_id(name_or_id)
+      self.first(:id => name_or_id) || self.first(:name => name_or_id)
     end
     
     private

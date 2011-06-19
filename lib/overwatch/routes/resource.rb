@@ -10,8 +10,8 @@ module Overwatch
       end
     end # GET index
 
-    get '/resources/:id/?' do |id|
-      resource = Overwatch::Resource.get(id)
+    get '/resources/:name_or_id/?' do |name_or_id|
+      resource = Overwatch::Resource.find_by_name_or_id(name_or_id)
       if resource
         status 200
         resource.to_json
@@ -32,8 +32,8 @@ module Overwatch
       end
     end # POST
 
-    delete '/resources/:id/?' do |id|
-      resource = Overwatch::Resource.get(id)
+    delete '/resources/:name_or_id/?' do |name_or_id|
+      resource = Overwatch::Resource.find_by_name_or_id(name_or_id)
       if resource
         if resource.delete
           status 204
@@ -47,8 +47,8 @@ module Overwatch
       end
     end # DELETE
 
-    get '/resources/:id/regenerate_api_key' do |id|
-      resource = Overwatch::Resource.get(id)
+    get '/resources/:name_or_id/regenerate_api_key' do |name_or_id|
+      resource = Overwatch::Resource.find_by_name_or_id(name_or_id)
       if resource
         if resource.regenerate_api_key
           status 200
@@ -77,8 +77,8 @@ module Overwatch
     end
     
     # All checks associated with a resource
-    get '/resources/:name/check/?' do |name|
-      checks = Overwatch::Resource.find(:name => name).first.resources
+    get '/resources/:name_or_id/checks/?' do |name_or_id|
+      checks = Overwatch::Resource.find_by_name_or_id(name_or_id).first.resources
       if checks.size == 0
         halt 404
       else

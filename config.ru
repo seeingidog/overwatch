@@ -11,5 +11,4 @@ require 'overwatch'
 run Rack::URLMap.new(
   "/"       => Overwatch::Application.new,
   "/resque" => Resque::Server.new
-
 )

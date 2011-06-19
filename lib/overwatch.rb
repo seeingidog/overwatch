@@ -1,28 +1,43 @@
 require 'yajl'
 require 'haml'
 require 'sinatra/base'
-require 'redis'
-require 'ohm'
-require 'ohm/contrib'
+require 'dm-core'
+require 'dm-validations'
+require 'dm-redis-adapter'
+require 'dm-serializer'
+require 'dm-types'
+require 'dm-timestamps'
 require 'mail'
 require 'hashie'
 require 'rest-client'
-require 'ruby-debug'
 require 'resque'
+
+DataMapper.setup(:default, { :adapter => 'redis' })
+
+require 'active_support/core_ext'
+# require 'active_support/core_ext/numeric/time'
+# require 'active_support/core_ext/string/conversions'
+# require 'active_support/core_ext/integer/time'
+# require 'active_support/core_ext/time/calculations'
+# require 'active_support/core_ext/date_time/calculations'
+
 
 require 'overwatch/version'
 require 'overwatch/application'
 
-require 'overwatch/snapshot'
-require 'overwatch/resource_check'
-require 'overwatch/check_event'
+# Models
+require 'overwatch/models/resource'
+require 'overwatch/models/snapshot'
+require 'overwatch/models/check'
+require 'overwatch/models/check_resource'
+require 'overwatch/models/rule'
+require 'overwatch/models/event'
+require 'overwatch/models/check_event'
 
-require 'overwatch/resource'
-require 'overwatch/rule'
-require 'overwatch/check'
+# Resque Jobs
 require 'overwatch/check_run'
-require 'overwatch/event'
 
+# Routes
 require 'overwatch/routes/resource'
 require 'overwatch/routes/snapshot'
 require 'overwatch/routes/check'

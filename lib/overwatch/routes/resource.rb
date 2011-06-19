@@ -2,7 +2,7 @@ module Overwatch
   class Application < Sinatra::Base
 
    get '/resources/?' do
-      # resources = Overwatch::Resource.all
+      resources = Overwatch::Resource.all
       if resources.size == 0
         halt 404
       else
@@ -10,8 +10,8 @@ module Overwatch
       end
     end # GET index
 
-    get '/resources/:name/?' do |name|
-      resource = Overwatch::Resource.find(:name => name).first
+    get '/resources/:id/?' do |id|
+      resource = Overwatch::Resource.get(id)
       if resource
         status 200
         resource.to_json
@@ -32,8 +32,8 @@ module Overwatch
       end
     end # POST
 
-    delete '/resources/:name/?' do |name|
-      resource = Overwatch::Resource.find(:name => name).first
+    delete '/resources/:id/?' do |id|
+      resource = Overwatch::Resource.get(id)
       if resource
         if resource.delete
           status 204
@@ -47,8 +47,8 @@ module Overwatch
       end
     end # DELETE
 
-    get '/resources/:name/regenerate_api_key' do |name|
-      resource = Overwatch::Resource.find(:name => name).first
+    get '/resources/:id/regenerate_api_key' do |id|
+      resource = Overwatch::Resource.get(id)
       if resource
         if resource.regenerate_api_key
           status 200

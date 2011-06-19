@@ -1,10 +1,10 @@
 module Overwatch
   class Event::HTTP < Event
-    attribute :url, String
-    attribute :action, Symbol
-    attribute :data, Hash
-    attribute :headers, Hash
-    attribute :content_type, Symbol
+    property :url, String
+    property :action, String
+    # property :data, Hash
+    # property :headers, Hash
+    property :content_type, String
     
     # def run(snapshot, check, rule)
     #       to_content_type = "to_#{self.content_type.to_s}"

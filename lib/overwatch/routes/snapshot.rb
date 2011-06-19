@@ -1,23 +1,21 @@
 module Overwatch
   class Application < Sinatra::Base
     
-    get '/resources/:name/snapshots/?' do |name|
-      resource = Resource.find(:name => name).first
+    get '/resources/:id/snapshots/?' do |id|
+      resource = Overwatch::Resource.get(id)
       dates = {}
-      dates[:start_at] = params[:start_at] || (DateTime.now - 1.hour)
+      dates[:start_at] = params[:start_at] || 1.hour.ago
       dates[:end_at] = params[:end_at] || DateTime.now
-      snapshots = resource.snapshots.find(
-        :created_at.gte => params['start_at'] || (DateTime.now - 1.month),
-        :created_at.lte => params['end_at'] || DateTime.now)
-      if params['attribute']
-        attr = params['attribute']
-        results = snapshots.inject([]) do |ret, snap|
-          ret << { :_id => snap[:_id], :created_at => snap[:created_at], :attribute => attr, :value => snap.data[attr] }
-        end
-        results.to_json(:only => [ :_id, :created_at, :attribute, :value ])
-      else
-        snapshots.to_json(:only => [ :_id, :created_at ])
-      end
+      snapshots = resource.snapshot_range(params['start_at'], params['end_at'])
+      # if params['attribute']
+      #         attr = params['attribute']
+      #         results = snapshots.inject([]) do |ret, snap|
+      #           ret << { :_id => snap[:_id], :created_at => snap[:created_at], :attribute => attr, :value => snap.data[attr] }
+      #         end
+      #         results.to_json
+      #       else
+        snapshots.to_json
+      # end
     end # GET index
 
     post '/resources/:name/snapshots/?' do |name|

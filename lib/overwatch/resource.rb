@@ -1,9 +1,13 @@
+require 'overwatch/snapshot'
+require 'overwatch/resource_check'
+
 module Overwatch
   class Resource < Ohm::Model
     include Ohm::Timestamping
     include Ohm::Typecast
     include Ohm::Callbacks
     include Ohm::ExtraValidations
+    include Ohm::Boundaries
     
     attribute :name, String
     attribute :api_key, String
@@ -11,14 +15,18 @@ module Overwatch
     index :name
     index :api_key
     
-    list :snapshots, "Overwatch::Snapshot"
-    set :resource_checks, "Overwatch::ResourceCheck"
+    collection :snapshots, Overwatch::Snapshot
+    collection :resource_checks, Overwatch::ResourceCheck
     
     def validate
       super
       assert_present :name
       assert_unique :name
       assert_unique :api_key
+    end
+    
+    def to_hash
+      super.merge(:name => name, :key => api_key)
     end
     
     before :create, :generate_api_key
@@ -31,6 +39,12 @@ module Overwatch
     
     def snapshot_range(start_at=Time.now, end_at=Time.now)
       snapshots.find(:created_at.gte => start_at, :created_at.lte => end_at)
+    end
+    
+    def snapshot_range(start_at, end_at)
+      self.snapshots.select do |s|
+        s.created_at.to_time < start_at.to_time && s.created_at.to_time > end_at.to_time
+      end
     end
     
     def previous_update

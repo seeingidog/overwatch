@@ -4,9 +4,10 @@ module Overwatch
     include Ohm::Typecast
     include Ohm::Callbacks
     include Ohm::ExtraValidations
+    include Ohm::Boundaries
     
-    reference :resource, "Overwatch::Resource"
-    reference :check, "Overwatch::Check"
+    reference :resource, lambda {|id| Overwatch::Resource[id] }
+    reference :check, lambda {|id|  Overwatch::Check[id] }
     
     index :resource
     index :check

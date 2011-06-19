@@ -4,11 +4,12 @@ module Overwatch
     include Ohm::Typecast
     include Ohm::Callbacks
     include Ohm::ExtraValidations
+    include Ohm::Boundaries
 
     attribute :attr, String
     attribute :conditions, Array
     
-    reference :check, "Overwatch::Check"
+    reference :check, lambda {|id| Overwatch::Check[id] }
     
     def run(snapshot)
       conditions.each do |condition|

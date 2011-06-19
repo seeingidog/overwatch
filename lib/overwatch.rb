@@ -7,29 +7,28 @@ require 'ohm/contrib'
 require 'mail'
 require 'hashie'
 require 'rest-client'
-require 'active_support'
+require 'ruby-debug'
+require 'resque'
 
 require 'overwatch/version'
 require 'overwatch/application'
 
-require 'overwatch/resource'
 require 'overwatch/snapshot'
-require 'overwatch/check'
 require 'overwatch/resource_check'
-require 'overwatch/rule'
-require 'overwatch/check_run'
 require 'overwatch/check_event'
+
+require 'overwatch/resource'
+require 'overwatch/rule'
+require 'overwatch/check'
+require 'overwatch/check_run'
 require 'overwatch/event'
-require 'overwatch/event/email'
-require 'overwatch/event/sms'
-require 'overwatch/event/http'
-require 'overwatch/event/stdout'
-require 'overwatch/event/xmpp'
 
 require 'overwatch/routes/resource'
 require 'overwatch/routes/snapshot'
+require 'overwatch/routes/check'
 
 module Overwatch
+  
   class << self
     def config_file_path
       @config_file_path ||= 

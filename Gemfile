@@ -15,10 +15,12 @@ gem 'yajl-ruby', :require => 'yajl'
 gem 'haml'
 gem 'hashie'
 gem 'rest-client'
-gem 'activesupport', "3.0.6"
 
 group :development, :test do
   gem 'rspec'
   gem 'spork'
   gem 'watchr'
+  gem 'rack-test'
+  gem 'ruby-debug-base19', "0.11.24"
+  gem 'ruby-debug19', "0.11.6"
 end

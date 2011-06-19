@@ -2,7 +2,7 @@ module Overwatch
   class Application < Sinatra::Base
 
    get '/resources/?' do
-      resources = Overwatch::Resource.all
+      # resources = Overwatch::Resource.all
       if resources.size == 0
         halt 404
       else

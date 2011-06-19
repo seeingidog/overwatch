@@ -4,10 +4,11 @@ module Overwatch
     include Ohm::Typecast
     include Ohm::Callbacks
     include Ohm::ExtraValidations
+    include Ohm::Boundaries
     
-    set :resource_checks, "Overwatch::ResourceCheck"
-    set :check_events, "Overwatch::CheckEvent"
-    set :rules, "Overwatch::Rule"
+    set :resource_checks, Overwatch::ResourceCheck
+    set :check_events, Overwatch::CheckEvent
+    set :rules, Overwatch::Rule
     
     def resources
       Overwatch::ResourceCheck.find(:check_id => self.id).map do |rc|

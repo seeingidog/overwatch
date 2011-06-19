@@ -4,10 +4,11 @@ module Overwatch
     include Ohm::Typecast
     include Ohm::Callbacks
     include Ohm::ExtraValidations
+    include Ohm::Boundaries
     
     attr_accessor :raw_data
 
-    reference :resource, "Overwatch::Resource"
+    reference :resource, lambda {|id| Overwatch::Resource[id] }
     
     index :resource
     index :created_at

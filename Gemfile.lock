@@ -2,12 +2,16 @@ GEM
   remote: http://rubygems.org/
   specs:
     activesupport (3.0.6)
+    archive-tar-minitar (0.5.2)
     backports (2.0.3)
+    columnize (0.3.3)
     diff-lcs (1.1.2)
     haml (3.0.25)
     hashie (1.0.0)
     i18n (0.5.0)
     json (1.4.6)
+    linecache19 (0.5.12)
+      ruby_core_source (>= 0.1.4)
     mail (2.2.16)
       activesupport (>= 2.3.6)
       i18n (>= 0.4.0)
@@ -24,6 +28,8 @@ GEM
       ohm
     polyglot (0.3.1)
     rack (1.2.2)
+    rack-test (0.6.0)
+      rack (>= 1.0)
     redis (2.2.0)
     redis-namespace (0.10.0)
       redis (< 3.0.0)
@@ -42,6 +48,16 @@ GEM
     rspec-expectations (2.5.0)
       diff-lcs (~> 1.1.2)
     rspec-mocks (2.5.0)
+    ruby-debug-base19 (0.11.24)
+      columnize (>= 0.3.1)
+      linecache19 (>= 0.5.11)
+      ruby_core_source (>= 0.1.4)
+    ruby-debug19 (0.11.6)
+      columnize (>= 0.3.1)
+      linecache19 (>= 0.5.11)
+      ruby-debug-base19 (>= 0.11.19)
+    ruby_core_source (0.1.5)
+      archive-tar-minitar (>= 0.5.2)
     sinatra (1.2.3)
       rack (~> 1.1)
       tilt (< 2.0, >= 1.2.2)
@@ -68,17 +84,19 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activesupport (= 3.0.6)
   haml
   hashie
   mail (~> 2.2.16)
   nest (~> 1.1.0)
   ohm
   ohm-contrib
+  rack-test
   redis
   resque
   rest-client
   rspec
+  ruby-debug-base19 (= 0.11.24)
+  ruby-debug19 (= 0.11.6)
   sinatra (~> 1.2.1)
   sinatra-reloader
   spork

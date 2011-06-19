@@ -4,8 +4,9 @@ module Overwatch
     include Ohm::Typecast
     include Ohm::Callbacks
     include Ohm::ExtraValidations
+    include Ohm::Boundaries
     
-    set :check_events, "Overwatch::CheckEvent"
+    set :check_events, Overwatch::CheckEvent
     
     def checks
       Overwatch::CheckEvent.find(:event_id => self.id).map do |rc|
@@ -17,3 +18,9 @@ module Overwatch
     end
   end # Event
 end # Overwatch
+
+require 'overwatch/event/email'
+require 'overwatch/event/sms'
+require 'overwatch/event/http'
+require 'overwatch/event/stdout'
+require 'overwatch/event/xmpp'

@@ -1111,7 +1111,7 @@ languages:
     - SMP
     - ASYNC_THREADS
     - HIPE
-uptime: 1 day 10 hours 33 minutes 03 seconds
+uptime: 1 day 10 hours 33 minutes 03 second
 hostname: ares
 redis: 
   connected_clients: "1"
@@ -1146,7 +1146,7 @@ redis:
   last_save_time: "1303051148"
   used_memory_human: 908.81K
   client_longest_output_list: "0"
-  uptime_in_seconds: "124"
+  uptime_in_second: "124"
   total_commands_processed: "2"
   changes_since_last_save: "0"
   mem_fragmentation_ratio: "1.23"
@@ -1823,5 +1823,5 @@ etc:
       uid: 87
       shell: /usr/bin/false
 macaddress: e0:f8:47:40:15:fc
-uptime_seconds: 124383
+uptime_second: 124383
 platform: mac_os_x

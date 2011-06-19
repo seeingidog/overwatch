@@ -1,3 +1,4 @@
+require 'sinatra/base'
 require 'overwatch/helpers'
 require 'overwatch/routes/resource'
 require 'overwatch/routes/snapshot'
@@ -20,25 +21,24 @@ module Overwatch
       begin
         require 'sinatra/reloader'
         register Sinatra::Reloader
-        also_reload File.join(File.dirname(__FILE__), 'resource')
-        also_reload File.join(File.dirname(__FILE__), 'snapshot')
+        also_reload File.join(File.dirname(__FILE__), 'models/resource')
+        also_reload File.join(File.dirname(__FILE__), 'models/snapshot')
+        also_reload File.join(File.dirname(__FILE__), 'routes/check')
+        also_reload File.join(File.dirname(__FILE__), 'models/check_event')
+        also_reload File.join(File.dirname(__FILE__), 'models/check_resource')
+        also_reload File.join(File.dirname(__FILE__), 'models/event')
+        also_reload File.join(File.dirname(__FILE__), 'models/rule')
         also_reload File.join(File.dirname(__FILE__), 'routes/resource')
-        also_reload File.join(File.dirname(__FILE__), 'snapshot')
+        also_reload File.join(File.dirname(__FILE__), 'routes/check')
+        also_reload File.join(File.dirname(__FILE__), 'routes/snapshot')
+        
         also_reload File.join(File.dirname(__FILE__), 'helpers')
       rescue LoadError
         puts "sinatra-reloader gem missing. reloading disabled"
-      end
-      # Mongoid.configure do |config|
-      #   config.master = Mongo::Connection.new.db("overwatch_dev")
-      #   config.persist_in_safe_mode = false
-      # end  
-      
+      end      
     end
     configure(:production) do
-      # Mongoid.configure do |config|
-      #   config.master = Mongo::Connection.new.db("overwatch_production")
-      #   config.persist_in_safe_mode = false
-      # end  
+      set :redis_url, ENV['REDIS_URL'] || 'redis://localhost:6379/0'
     end
     
     before do

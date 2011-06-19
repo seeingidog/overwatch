@@ -1,31 +1,32 @@
 module Overwatch
   class Application < Sinatra::Base
     
-    get '/resources/:name/snapshots/?' do |name|
-      resource = Resource.find(:name => name).first
-      dates = {}
-      dates[:start_at] = params[:start_at] || (DateTime.now - 1.hour)
-      dates[:end_at] = params[:end_at] || DateTime.now
-      snapshots = resource.snapshots.find(
-        :created_at.gte => params['start_at'] || (DateTime.now - 1.month),
-        :created_at.lte => params['end_at'] || DateTime.now)
-      if params['attribute']
-        attr = params['attribute']
-        results = snapshots.inject([]) do |ret, snap|
-          ret << { :_id => snap[:_id], :created_at => snap[:created_at], :attribute => attr, :value => snap.data[attr] }
-        end
-        results.to_json(:only => [ :_id, :created_at, :attribute, :value ])
+    get '/resources/:name_or_id/snapshots/?' do |name_or_id|
+      resource = Overwatch::Resource.find_by_name_or_id(name_or_id)
+      start_at = params[:start_at] || 1.hour.ago
+      end_at = params[:end_at] || DateTime.now
+      snapshots = resource.snapshots.all(:created_at.gte => start_at, :created_at.lte => end_at)
+      # if params['attribute']
+      #         attr = params['attribute']
+      #         results = snapshots.inject([]) do |ret, snap|
+      #           ret << { :_id => snap[:_id], :created_at => snap[:created_at], :attribute => attr, :value => snap.data[attr] }
+      #         end
+      #         results.to_json
+      #       else
+      if snapshots
+        snapshots.to_json
       else
-        snapshots.to_json(:only => [ :_id, :created_at ])
+        halt 404
       end
+      # end
     end # GET index
 
-    post '/resources/:name/snapshots/?' do |name|
-      resource = Resource.find(:name => name).first
-      snapshot = resource.snapshots.new(:raw_data => request.body.read)
+    post '/resources/:name_or_id/snapshots/?' do |name_or_id|
+      resource = Overwatch::Resource.find_by_name_or_id(name_or_id)
+      snapshot = resource.snapshots.new(:data => request.body.read)
       
       if snapshot.save
-        # body resquest.body.read.to_json
+        body resquest.body.read.to_json
         snapshot.to_json
       else
         status 422
@@ -33,9 +34,9 @@ module Overwatch
       end
     end # POST
     
-    get '/resources/:name/snapshots/:id/?' do |name, id|
-      resource = Overwatch::Resource.find(:name => name).first
-      snapshot = resource.snapshots.find(id)
+    get '/resources/:name_or_id/snapshots/:id/?' do |name_or_id, id|
+      resource = Overwatch::Resource.find_by_name_or_id(name_or_id)
+      snapshot = resource.snapshots.get(id)
       if snapshot
         status 200
         snapshot.to_json
@@ -44,9 +45,9 @@ module Overwatch
       end
     end # GET show
 
-    delete '/resources/:name/snapshots/:id/?' do |name, id|
-      resource = Overwatch::Resource.find(:name => name).first
-      snapshot = resource.snapshots.find(id)
+    delete '/resources/:name_or_id/snapshots/:id/?' do |name_or_id, id|
+      resource = Overwatch::Resource.find_by_name_or_id(name_or_id)
+      snapshot = resource.snapshots.get(id)
       if snapshot
         if snapshot.delete
           status 204
@@ -60,9 +61,9 @@ module Overwatch
       end
     end # DELETE
     
-    get '/resources/:name/snapshots/:id/data/?' do |name, id|
-      resource = Resource.find(:name => name).first
-      snapshot = resource.snapshots.find(id)
+    get '/resources/:name_or_id/snapshots/:id/data/?' do |name_or_id, id|
+      resource = Overwatch::Resource.find_by_name_or_id(name_or_id)
+      snapshot = resource.snapshots.get(id)
       if snapshot
         status 200
         snapshot.data.to_json

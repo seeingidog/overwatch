@@ -3,7 +3,7 @@ module Overwatch
     @queue = :checks
     
     def self.perform(resource_id)
-      resource = Resource.find(resource_id)
+      resource = Resource.get(resource_id)
       resource.checks.each do |check|
         check.run(resource.last_update)
       end

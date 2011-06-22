@@ -13,7 +13,8 @@ module Overwatch
     has n, :events, :through => :checks
     
     before :create, :generate_api_key
-
+    after :create, :schedule_no_data_check
+    
     def snapshot_range(start_at=nil, end_at=nil)
       s = start_at || DateTime.now - 1.hour
       e = end_at || DateTime.now
@@ -32,13 +33,17 @@ module Overwatch
       Resque.enqueue(CheckRun, self.id.to_s)
     end
     
+    def schedule_no_data_check
+      Resque.enqueue_in(5.minutes, NoDataCheck, self)
+    end
+    
     def regenerate_api_key
       generate_api_key
       self.save
     end
     
     def self.find_by_name_or_id(name_or_id)
-      self.first(:id => name_or_id) || self.first(:name => name_or_id)
+      self.first(:id => name_or_id) || self.first(:name => name_or_id) rescue nil
     end
     
     private

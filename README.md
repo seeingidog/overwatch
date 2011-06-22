@@ -109,11 +109,7 @@ An event is the action that occurs if a check run fails. Events can send emails,
     
 ## Installation
 
-    git clone git://github.com/danryan/overwatch.git
-    cd overwatch
-    rackup
-    
-    
+    git clone git://github.com/danryan/overwatch.git && cd overwatch && rackup
 
 ## Roadmap
 
@@ -123,4 +119,4 @@ Some things I need to implement before I consider Overwatch ready for primetime 
 * Finish the API for creating checks, rules and events
 * Add a frontend
 * Additional metrics processing (average/min/max over n minutes)
-* Replace MongoDB with Redis completely
+* Include resource-based and user-based access control

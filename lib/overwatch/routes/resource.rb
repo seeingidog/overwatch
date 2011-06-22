@@ -16,8 +16,7 @@ module Overwatch
         status 200
         resource.to_json
       else
-        status 404
-        body "Resource not found".to_json
+        halt 404
       end
     end # GET show
 
@@ -78,7 +77,7 @@ module Overwatch
     
     # All checks associated with a resource
     get '/resources/:name_or_id/checks/?' do |name_or_id|
-      checks = Overwatch::Resource.find_by_name_or_id(name_or_id).first.resources
+      checks = Overwatch::Resource.find_by_name_or_id(name_or_id).checks
       if checks.size == 0
         halt 404
       else

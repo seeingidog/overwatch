@@ -2,6 +2,8 @@ require 'bundler'
 Bundler.require(:default)
 
 DataMapper.setup(:default, { :adapter => 'redis' })
+require 'resque_scheduler'
+require 'resque/scheduler'
 
 require 'active_support/core_ext'
 
@@ -18,7 +20,9 @@ require 'overwatch/models/event'
 require 'overwatch/models/check_event'
 
 # Resque Jobs
-require 'overwatch/check_run'
+require 'overwatch/jobs/check_run'
+require 'overwatch/jobs/snapshot_reaper'
+require 'overwatch/jobs/no_data_check'
 
 # Routes
 require 'overwatch/routes/resource'
